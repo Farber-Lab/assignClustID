@@ -1,12 +1,31 @@
 Package: assignClustID
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: assignClustID: Assign souporcell cluster to known genotype
+Version: 0.0.1
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Kristyna", "Kupkova", email = "kristynakupkova@gmail.com", 
+    role = c("aut", "cre"))
+Description: R package that takes a VCF output from souporcell and calculates
+    similarity to known genotypes.
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+biocViews: Sequencing, Software, Visualization
+Depends:  
+    R (>= 2.10)
+Imports:
+    dplyr,
+    tidyr,
+    tidyselect,
+    circlize,
+    ComplexHeatmap,
+    data.table,
+    stringr,
+    tibble,
+    grid
+Suggests:
+    rmarkdown,
+    knitr,
+    viridisLite
+LazyData: true
+License: MIT + file LICENSE
+VignetteBuilder: knitr
