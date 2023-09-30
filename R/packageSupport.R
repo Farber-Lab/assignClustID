@@ -17,6 +17,8 @@
 #' @importFrom tibble column_to_rownames
 #' @importFrom grid gpar
 #' @importFrom grid grid.text
+#' @importFrom klippy klippy
+#' @importFrom utils head
 
 # Because of some issues with NOTEs on R CMD check and CRAN submission,
 # (see here: http://stackoverflow.com/questions/9439256/)

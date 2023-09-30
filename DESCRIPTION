@@ -21,7 +21,8 @@ Imports:
     data.table,
     stringr,
     tibble,
-    grid
+    grid,
+    klippy
 Suggests:
     rmarkdown,
     knitr,

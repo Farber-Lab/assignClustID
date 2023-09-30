@@ -194,8 +194,8 @@ plotClustSimilarity = function(simMatrix,
                col = colFun,
                heatmap_legend_param = list(
                  title = "similarity"),
-               column_title = "ID", column_title_side = "bottom",
-               row_title = "Cluster ID", row_title_side = "right",
+               #column_title = "ID", column_title_side = "bottom",
+               #row_title = "Cluster ID", row_title_side = "right",
                cell_fun = function(j, i, x, y, width, height, fill) {
                  grid.text(sprintf("%.3f", mat[i, j]), x, y,
                            gp = gpar(fontsize = 10))
@@ -206,16 +206,17 @@ plotClustSimilarity = function(simMatrix,
 }
 
 
-# simFunc: Internal helper function to calculate similarities
-# @param x string vector containing with genotypes from souporcell
-# @param y string vector containing with known genotypes
-# @param compareIncomplete Logical variable specifying if only positions with
-#    complete genotype information from known genotypes and souporcell output
-#    should be used to calculate similarity. TRUE = compare markers for which
-#    genotypes are NOT available for all tested individuals, FALSE =
-#    compare only markers with genotypes available across all individials -
-#    both from souporcell and known genotypes (default - FALSE, which means
-#    only complete cases will be considered)
+#' simFunc: Internal helper function to calculate similarities
+#' @param x string vector containing with genotypes from souporcell
+#' @param y string vector containing with known genotypes
+#' @param compareIncomplete Logical variable specifying if only positions with
+#'    complete genotype information from known genotypes and souporcell output
+#'    should be used to calculate similarity. TRUE = compare markers for which
+#'    genotypes are NOT available for all tested individuals, FALSE =
+#'    compare only markers with genotypes available across all individials -
+#'    both from souporcell and known genotypes (default - FALSE, which means
+#'    only complete cases will be considered)
+#' @noRd
 simFunc = function(x, y, compareIncomplete){
   # of only complete cases are considered
   if (!compareIncomplete){
@@ -229,11 +230,12 @@ simFunc = function(x, y, compareIncomplete){
 }
 
 
-# Internal helper function to load VCF file
-#
-# @param pathToVCF A string specifying a path to a VCF file produced by
-#    souporcell. Provide full path including the file name.
-#  @return A data.
+#' Internal helper function to load VCF file
+#'
+#' @param pathToVCF A string specifying a path to a VCF file produced by
+#'    souporcell. Provide full path including the file name.
+#' @return A data.frame - VCF file without the header lines
+#' @noRd
 loadVCF = function(pathToVCF){
   if(endsWith(pathToVCF,suffix = "vcf") | endsWith(pathToVCF,suffix = "VCF")){
     vcf = as.data.frame(fread(pathToVCF, skip = "#CHROM"))
