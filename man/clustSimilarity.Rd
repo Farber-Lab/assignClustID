@@ -5,7 +5,13 @@
 \title{clustSimilarity: main function to compare the similarity between genotypes
 reported by souporcell and our known genotypes}
 \usage{
-clustSimilarity(pathToVCF, genotypes, IDs = NULL, compareIncomplete = FALSE)
+clustSimilarity(
+  pathToVCF,
+  genotypes,
+  IDs = NULL,
+  compareIncomplete = FALSE,
+  minQual = NULL
+)
 }
 \arguments{
 \item{pathToVCF}{A string specifying a path to a VCF file produced by
@@ -29,6 +35,9 @@ genotypes are NOT available for all tested individuals, FALSE =
 compare only markers with genotypes available across all individials -
 both from souporcell and known genotypes (default - FALSE, which means
 only complete cases will be considered)}
+
+\item{minQual}{An optional numerical variable specifying minimal QUAL
+threshold for genotypes from souporcell vcf output to be considered}
 }
 \value{
 data.frame containing similarities (proportional matches between

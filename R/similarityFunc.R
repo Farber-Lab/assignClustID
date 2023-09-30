@@ -19,6 +19,8 @@
 #'    compare only markers with genotypes available across all individials -
 #'    both from souporcell and known genotypes (default - FALSE, which means
 #'    only complete cases will be considered)
+#' @param minQual An optional numerical variable specifying minimal QUAL
+#'    threshold for genotypes from souporcell vcf output to be considered
 #' @return data.frame containing similarities (proportional matches between
 #'    genotypes) between souporcell clusters (rows) and known genotypes
 #'    (columns)
@@ -32,10 +34,21 @@
 clustSimilarity = function(pathToVCF,
                            genotypes,
                            IDs=NULL,
-                           compareIncomplete=FALSE){
+                           compareIncomplete=FALSE,
+                           minQual=NULL){
   # load VCF file (and check if chromosomes start with "chr")
   vcf = loadVCF(pathToVCF)
 
+  # quality filter is set, apply it
+  if (!is.null(minQual)){
+    suppressWarnings({
+    vcf = vcf %>%
+      mutate(QUAL = as.numeric(QUAL)) %>%
+      filter(!is.na(QUAL) & QUAL >= minQual)
+    })
+  }
+
+  # check for "genotype" input type
   if (!is.data.frame(genotypes)){
     stop("Input to genotypes variable must be a data.frame.")
   }
