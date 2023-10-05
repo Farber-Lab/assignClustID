@@ -21,7 +21,8 @@ combinationsComp = complement(combinations, case = "upper")
 # 4) reverse complement
 combinationsRevComp = reverseComplement(combinations, case = "upper")
 
-
+# create matrix, where matches are: identical matches, flipped order,
+# and reverse complement of both
 # initiate matrix with all possible pairs
 comparisonTable = matrix(0, length(combinations), length(combinations))
 colnames(comparisonTable) = combinations
@@ -47,3 +48,24 @@ for (i in seq(1, length(combinations))){
 # document data
 usethis::use_data(comparisonTable, overwrite = TRUE)
 
+
+# create matrix, where matches are: identical matches, flipped order,
+# and NOT reverse complement of both
+# initiate matrix with all possible pairs
+comparisonTableNoRevComp = matrix(0, length(combinations), length(combinations))
+colnames(comparisonTableNoRevComp) = combinations
+rownames(comparisonTableNoRevComp) = combinations
+
+# now set 1 to all possible matches
+for (i in seq(1, length(combinations))){
+
+  # direct matches
+  comparisonTableNoRevComp[combinations[i], combinations[i]] = 1
+
+  # flipped matches
+  comparisonTableNoRevComp[combinations[i], combinationsFlip[i]] = 1
+
+}
+
+# document data
+usethis::use_data(comparisonTableNoRevComp, overwrite = TRUE)

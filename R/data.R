@@ -14,7 +14,7 @@
 "DO_mm10"
 
 
-#’ Comparison table to match dinuccleotide pairs
+#’ Comparison table to match dinucleotide pairs
 #'
 #' Matrix containing all possible combinations of what could be dinucleotide
 #' matches
@@ -25,3 +25,16 @@
 #' }
 #' @name comparisonTable
 "comparisonTable"
+
+
+
+#’ Comparison table to match dinucleotide pairs
+#'
+#' Matrix containing dinucleotide matches excluding reverse complements
+#'
+#' @format A matrix with 16 rows and 16 variables
+#' \describe{
+#'   \item{dinucleotide}
+#' }
+#' @name comparisonTableNoRevComp
+"comparisonTableNoRevComp"
