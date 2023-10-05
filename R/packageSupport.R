@@ -28,5 +28,6 @@ if(getRversion() >= "2.15.1") {
   utils::globalVariables(c("ALT", "DO_mm10", "FILTER", "FORMAT", "ID", "QUAL",
                            "REF", "a1", "a1sort", "a2", "a2sort", "chr",
                            "cluster", "corrGenotype", "genotype", "info",
-                           "marker", "position", "toss", "x", "y"))
+                           "marker", "position", "toss", "x", "y",
+                           "comparisonTable", "comparisonTableNoRevComp"))
 }

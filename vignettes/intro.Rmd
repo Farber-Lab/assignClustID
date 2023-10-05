@@ -60,7 +60,9 @@ look.
 library(assignClustID)
 
 # 1) example VCF file - souporcell output
-VCFpath = system.file("extdata", "cluster_genotypes.vcf", package = "assignClustID")
+VCFpath = system.file("extdata", 
+                      "cluster_genotypes.vcf", 
+                      package = "assignClustID")
 
 # show path
 VCFpath
@@ -140,8 +142,8 @@ includeIDs
 
 ```{r calculate_similarities_options, fig.width=4, fig.height=3.5}
 selectSim= clustSimilarity(pathToVCF=VCFpath, 
-                               genotypes=mm10_genotypes, 
-                               IDs=includeIDs)
+                           genotypes=mm10_genotypes, 
+                           IDs=includeIDs)
 
 # plot and change palette to "RdBu"
 simPlot = plotClustSimilarity(selectSim, RCBpalette="RdBu")

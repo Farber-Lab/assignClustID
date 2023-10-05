@@ -10,7 +10,8 @@ clustSimilarity(
   genotypes,
   IDs = NULL,
   compareIncomplete = FALSE,
-  minQual = NULL
+  minQual = NULL,
+  countReverseComplement = TRUE
 )
 }
 \arguments{
@@ -38,6 +39,10 @@ only complete cases will be considered)}
 
 \item{minQual}{An optional numerical variable specifying minimal QUAL
 threshold for genotypes from souporcell vcf output to be considered}
+
+\item{countReverseComplement}{Logical variable - an optional parameter
+specifying if reverse complements should be considered matches.
+Default: TRUE.}
 }
 \value{
 data.frame containing similarities (proportional matches between
