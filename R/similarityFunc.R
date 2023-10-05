@@ -21,6 +21,9 @@
 #'    only complete cases will be considered)
 #' @param minQual An optional numerical variable specifying minimal QUAL
 #'    threshold for genotypes from souporcell vcf output to be considered
+#' @param countReverseComplement Logical variable - an optional parameter
+#'    specifying if reverse complements should be considered matches.
+#'    Default: TRUE.
 #' @return data.frame containing similarities (proportional matches between
 #'    genotypes) between souporcell clusters (rows) and known genotypes
 #'    (columns)
@@ -35,16 +38,17 @@ clustSimilarity = function(pathToVCF,
                            genotypes,
                            IDs=NULL,
                            compareIncomplete=FALSE,
-                           minQual=NULL){
+                           minQual=NULL,
+                           countReverseComplement=TRUE){
   # load VCF file (and check if chromosomes start with "chr")
   vcf = loadVCF(pathToVCF)
 
   # quality filter is set, apply it
   if (!is.null(minQual)){
     suppressWarnings({
-    vcf = vcf %>%
-      mutate(QUAL = as.numeric(QUAL)) %>%
-      filter(!is.na(QUAL) & QUAL >= minQual)
+      vcf = vcf %>%
+        mutate(QUAL = as.numeric(QUAL)) %>%
+        filter(!is.na(QUAL) & QUAL >= minQual)
     })
   }
 
@@ -91,8 +95,6 @@ clustSimilarity = function(pathToVCF,
       drop_na()
   }
 
-
-
   # if specific IDs were provided - select just those
   if (!is.null(IDs)){
     IDgenotypes = genotypes %>%
@@ -101,7 +103,6 @@ clustSimilarity = function(pathToVCF,
     IDgenotypes = genotypes %>%
       select(-c(position, chr))
   }
-
 
   # replace -- with NA
   correctedGenotypes = IDgenotypes  %>%
@@ -132,7 +133,7 @@ clustSimilarity = function(pathToVCF,
       combo = paste(i, j, sep = "__")
       similarity = simFunc(testTable[,i],
                            testTable[,j],
-                           compareIncomplete)
+                           countReverseComplement)
       results = data.frame(combo = combo, similarity = similarity)
       if (!exists("resTable")){
         resTable = results
@@ -191,23 +192,25 @@ plotClustSimilarity = function(simMatrix,
 #' simFunc: Internal helper function to calculate similarities
 #' @param x string vector containing with genotypes from souporcell
 #' @param y string vector containing with known genotypes
-#' @param compareIncomplete Logical variable specifying if only positions with
-#'    complete genotype information from known genotypes and souporcell output
-#'    should be used to calculate similarity. TRUE = compare markers for which
-#'    genotypes are NOT available for all tested individuals, FALSE =
-#'    compare only markers with genotypes available across all individials -
-#'    both from souporcell and known genotypes (default - FALSE, which means
-#'    only complete cases will be considered)
+#' @param countReverseComplement Logical variable - an optional parameter
+#'    specifying if reverse complements should be considered matches.
+#'    Default: TRUE.
 #' @noRd
-simFunc = function(x, y, compareIncomplete){
-  # of only complete cases are considered
-  if (!compareIncomplete){
-    similarity = round(sum(x==y)/length(x), digits = 3)
+simFunc = function(x, y, countReverseComplement){
+  # find out if reverse complements should be counted as matches
+  # and load according table
+  if (countReverseComplement){
+    matchTable = comparisonTable
   } else {
-    # find how many comparisons don't have NAs
-    nonNA = sum(!is.na(x==y))
-    similarity = sum(x==y, na.rm = TRUE)/nonNA
+    matchTable = comparisonTableNoRevComp
   }
+
+  # find which pairs match
+  matches = matchTable[cbind(x,y)]
+
+  # of only complete cases are considered
+  nonNA = sum(!is.na(x==y))
+  similarity = sum(matches, na.rm = TRUE)/nonNA
   return(similarity)
 }
 
