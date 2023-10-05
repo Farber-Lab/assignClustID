@@ -76,10 +76,8 @@ clustSimilarity = function(pathToVCF,
     # recreate genotypes based on information provided
     mutate(a1 = ifelse(x == "1", ALT, REF)) %>%
     mutate(a2 = ifelse(y == "1", ALT, REF)) %>%
-    # final genotype info is alphabetically sorted
-    mutate(a1sort = pmin(a1, a2)) %>%
-    mutate(a2sort = pmax(a1, a2)) %>%
-    mutate(genotype = paste0(a1sort, a2sort)) %>%
+    # final genotype
+    mutate(genotype = paste0(a1, a2)) %>%
     # select only desired variable and convert back to wide format
     dplyr::select(marker, cluster, genotype) %>%
     # add prefix before cluster number
@@ -94,16 +92,6 @@ clustSimilarity = function(pathToVCF,
   }
 
 
-  #---
-  # # get all possible genotypes from DO mice (to see if order matters:
-  # # e.g. AT/TA)
-  # allGens = genotypes %>%
-  #   select(-c(chr, position)) %>%
-  #   pivot_longer(!marker, names_to = "mouse", values_to = "gen")
-  # levels(factor(allGens$gen))
-  # # everything as alphabetically sorted only GC and CG can be
-  # # either way -> edit that in the table with selected mice
-  # # to only CG
 
   # if specific IDs were provided - select just those
   if (!is.null(IDs)){
@@ -115,14 +103,8 @@ clustSimilarity = function(pathToVCF,
   }
 
 
-  # correct GC to CG to match the souporcell output
-  correctedGenotypes = IDgenotypes %>%
-    # correct GC values to CG
-    pivot_longer(!marker, names_to = "ID", values_to = "genotype") %>%
-    mutate(corrGenotype = str_replace(genotype, pattern = "GC",
-                                      replacement = "CG")) %>%
-    dplyr::select(-genotype) %>%
-    pivot_wider(names_from = ID, values_from = corrGenotype) %>%
+  # replace -- with NA
+  correctedGenotypes = IDgenotypes  %>%
     # replace unknown genotypes (--) with NA
     mutate(across(where(is.character), ~na_if(., "--")))
 
