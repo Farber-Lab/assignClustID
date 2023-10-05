@@ -6,10 +6,7 @@
 \title{Matrix containing all possible combinations of what could be dinucleotide
 matches}
 \format{
-A matrix with 16 rows and 16 variables
-\describe{
-\item{dinucleotide}
-}
+A matrix with 16 rows and 16 variables: matches =1
 }
 \usage{
 comparisonTable
