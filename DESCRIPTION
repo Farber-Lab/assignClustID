@@ -1,6 +1,6 @@
 Package: assignClustID
 Title: assignClustID: Assign souporcell cluster to known genotype
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: 
     person("Kristyna", "Kupkova", email = "kristynakupkova@gmail.com", 
     role = c("aut", "cre"))
